@@ -1,0 +1,14 @@
+WiiFlight
+Copyright 2012 Hiromu Yakura.
+
+This product developed by Hiromu Yakura.
+The source code of it is available on Google Code project site.
+	http://code.google.com/p/wii-flight
+
+It is based on EarthSurfer.
+	http://code.google.com/p/earthsurfer
+This is licensed on Apache 2.0 License.
+
+The javascript code of plane control is based on MONSTER MILKTRUCK!
+	http://earth-api-samples.googlecode.com/svn/trunk/demos/milktruck/index.html
+This is licensed on Apache 2.0 License.

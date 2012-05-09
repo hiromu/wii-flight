@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Flight Simurator</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Style-Type" content="text/css">
+		<style type="text/css">
+		<!--
+			html, body {
+				margin: 0;
+				padding: 0;
+			}
+		-->
+		</style>
+		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="math3d.js"></script>
+		<script type="text/javascript" src="plane.js"></script>
+		<script type="text/javascript">
+		//<![CDATA[
+			google.load("earth", "1", {'other_params': 'sensor=false'});
+			google.load("maps", "2", {'other_params': 'sensor=false'});
+
+			var ge = null;
+			var geocoder;
+			var plane;
+
+			function init() {
+				geocoder = new GClientGeocoder();
+				google.earth.createInstance('map3d', initCallback, failCallback);
+			}
+
+			function initCallback(object) {
+				ge = object;
+				ge.getWindow().setVisibility(true);
+				ge.getOptions().setStatusBarVisibility(true);
+				ge.getOptions().setMouseNavigationEnabled(false);
+				ge.getOptions().setFlyToSpeed(ge.SPEED_TELEPORT);
+				ge.getNavigationControl().setVisibility(ge.VISIBILITY_SHOW);
+				ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
+				ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
+				
+				plane = new Plane();
+			}
+			
+			function failCallback() {
+				var mapElement = document.getElementById('map3d');
+				var childElements = mapElement.childNodes;
+				for(var i = 0; i < childElements.length; i++)
+					mapElement.removeChild(childElements[i]);
+				init();
+			}
+
+			function doGeocode(address) {
+				geocoder.getLatLng(address, function(point) {
+					if(point) {
+						if (ge != null && plane != null) {
+							var alt = parseInt(Math.log(plane.model.getLocation().getAltitude()) * Math.LOG10E) - 1;
+							plane.teleportTo(point.y - 0.02 * alt, point.x);
+						}
+					}
+				});
+			}
+
+			function getLocation() {
+				var lookAt = plane.model.getLocation();
+				var lat = lookAt.getLatitude();
+				var lng = lookAt.getLongitude();
+				var alt = lookAt.getAltitude();
+				return lat + ' ' + lng + ' ' + alt;
+			}
+		//]]>
+		</script>
+	</head>
+	<body onunload="GUnload()" onkeydown="return keyDown(event);" onkeyup="return keyUp(event);">
+		<div id="map3d"></div>
+	</body>
+</html>
