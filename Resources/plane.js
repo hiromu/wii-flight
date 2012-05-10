@@ -20,7 +20,7 @@
 window.truck = null;
 
 // Pull the airplane model
-var MODEL_URL = 'http://wii-flight.googlecode.com/git/Assets/hawk.kmz';
+var MODEL_URL = 'http://wii-flight.googlecode.com/git/Resources/hawk.kmz';
 
 var STEER_ROLL = -1.0;
 var ROLL_SPRING = 0.25;
